@@ -6,16 +6,17 @@
 
 ## Overview
 
-<ul style="list-style: none;">
-<li>✔️ Simple API
-<li>✔️ Supports JWTs, simple string tokens and custom profiles
-<li>✔️ Supports handling multiple tokens (access-token, id-token, refresh-token)
-<li>✔️ Automatic logout and periodic refresh functions
-<li>✔️ Customisable persistent storage
-<li>✔️ Server-side rendering
-<li>✔️ Global login and logout events across tabs
-<li>✔️ Typescript typings and helper functions
-</ul>
+<span>
+✔️ Simple API <br />
+✔️ Supports JWTs, simple string tokens and custom profiles <br />
+✔️ Supports handling multiple tokens (access-token, id-token, refresh-token) <br />
+✔️ Automatic logout and periodic refresh functions <br />
+✔️ Customisable persistent storage <br />
+✔️ Server-side rendering <br />
+✔️ Global login and logout events across tabs <br />
+✔️ Typescript typings and helper functions <br />
+</span>
+
 
 ## Getting Started
 
