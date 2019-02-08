@@ -1,1 +1,0 @@
-{"version":3,"file":"isAuthenticatedSession.d.ts","sourceRoot":"","sources":["../src/isAuthenticatedSession.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,oBAAoB,EAAE,UAAU,EAAE,MAAM,cAAc,CAAC;AAEhE,MAAM,CAAC,OAAO,UAAU,eAAe,CAAC,QAAQ,EAC9C,OAAO,EAAE,UAAU,CAAC,QAAQ,CAAC,GAC5B,OAAO,IAAI,oBAAoB,CAAC,QAAQ,CAAC,CAE3C"}

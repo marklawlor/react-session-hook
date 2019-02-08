@@ -1,14 +1,12 @@
 {
   "name": "react-session-hook",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.3",
   "main": "index.js",
   "license": "MIT",
   "typings": "index.d.js",
   "scripts": {
     "test": "jest",
-    "package": "rm -rf dist && tsc -p tsconfig.build.json && cp package.json dist/package.json",
-    "prepublish": "yarn package",
-    "publish": "cd dist && npm publish"
+    "package": "rm -rf dist && tsc -p tsconfig.build.json && cp -t dist/ README.md package.json LICENSE"
   },
   "devDependencies": {
     "@types/jest": "^24.0.0",
