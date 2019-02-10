@@ -38,19 +38,20 @@ And within your react component:
 import useSession from 'react-session-hook';
 
 export default () => {
-   
-  /**
-   * Recommended
-   */
-   
   // use the JWT values in storage
-  const { token, profile, isAuthenticated, expiration } = useSession();
+  const session = useSession();
   
   // or for non JWT tokens
-  const { token, isAuthenticated, expiration } = useSession({ jwt: false });
+  const session = useSession({ jwt: false });
 
   // if you wish to change any settings provide values
-  const { profile, isAuthenticated, expiration } = useSession(options);
+  const session = useSession(options);
+
+  if (session.isAuthenticated) {
+    return <div>Logged in as: {session.profile.name}</div>
+  } else {
+    return <div>You are logged out</div>
+  }
 }
 ```
 
@@ -169,7 +170,26 @@ If you are using a custom storage, the request will be passed to your store.
 It also includes the `isAuthenicatedGuard` function, which acts as a typeguard between an
 authenicated and authenicated session
 
-See the examples to see it in action
+```javascript
+import useSession from 'react-session-hook';
+
+interface Profile {
+  name: string
+}
+
+export default () => {
+  // use the JWT values in storage
+  const session = useSession<Profile>();
+  
+  if (session.isAuthenicatedGuard()) {
+    // Typed as session.profile = Profile
+    return <div>Logged in as: {session.profile.name}</div>
+  } else {
+    // Typed as session.profile = null
+    return <div>You are logged out</div>
+  }
+}
+```
 
 ## Misc
 
