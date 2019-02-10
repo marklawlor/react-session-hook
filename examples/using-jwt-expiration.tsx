@@ -1,14 +1,19 @@
 import React from "react";
 import jwt from "jsonwebtoken";
 
-import useSession, { UseSessionOptions } from "../src";
+import useSession from "../src";
 
 const payload = {
-  name: "John Smith"
+  name: "John Smith",
+  exp: (Date.now() + 1 * 60 * 1000) / 1000 // 1 minute
 };
 
 const token = jwt.sign(payload, "secret");
 
+/***
+ * After 1 minute, the text will change from
+ * 'My Name Is: John Smith' to 'My Name Is: Unknown'
+ */
 export default () => {
   const session = useSession({ token });
 

@@ -23,17 +23,18 @@ const getComputedValues = <TProfile>(
     }
   }
 
-  if (profile && profile.exp) {
-    expiration = new Date(profile.exp * 1000);
-  } else if (profile) {
-    const MAX_TIMESTAMP = 8640000000000000;
-    expiration = new Date(MAX_TIMESTAMP);
+  if (expiration === undefined) {
+    if (profile && profile.exp) {
+      expiration = new Date(profile.exp * 1000);
+    } else if (profile) {
+      expiration = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10 hours
+    }
   }
 
-  let isAuthenticated = true;
+  let isAuthenticated = false;
 
-  if (!(accessToken || token)) {
-    isAuthenticated = false;
+  if (expiration === null && profile) {
+    isAuthenticated = true;
   } else if (expiration) {
     isAuthenticated = Date.now() < expiration.valueOf();
   }

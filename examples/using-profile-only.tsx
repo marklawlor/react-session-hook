@@ -1,16 +1,14 @@
 import React from "react";
 import jwt from "jsonwebtoken";
 
-import useSession, { UseSessionOptions } from "../src";
-
-const payload = {
-  name: "John Smith"
-};
-
-const token = jwt.sign(payload, "secret");
+import useSession from "../src";
 
 export default () => {
-  const session = useSession({ token });
+  const session = useSession({
+    profile: {
+      name: "John Smith"
+    }
+  });
 
   // isAuthenticatedGuard is not needed, it only provides a Typescript typeguard
   // you can also use if (session.isAuthenticated === true)

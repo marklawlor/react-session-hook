@@ -15,21 +15,17 @@ import {
 export const defaultOptions = {
   jwt: true,
   isAuthenticated: false,
-  refreshInterval: null,
+  refreshInterval: 15 * 60 * 1000,
   refreshFn: undefined,
   storage: cookies
 };
 
-const useSession = <TProfile = Profile>(
-  partialOptions: UseSessionOptions<TProfile> = {}
-): UseSession<TProfile> => {
-  if (typeof partialOptions !== "object") {
-    throw new Error("Invalid option passed to useSession");
-  }
-
+const getInitialState = <TProfile>(
+  useSessionOptions: UseSessionOptions<TProfile>
+) => {
   let options: RequiredUseSessionOptions<TProfile> = {
     ...defaultOptions,
-    ...partialOptions
+    ...useSessionOptions
   };
 
   options = {
@@ -46,13 +42,24 @@ const useSession = <TProfile = Profile>(
 
   options.storage.set(options, options.expiration);
 
-  const [state, setState] = useState<any>(options);
+  return options;
+};
+
+const useSession = <TProfile = Profile>(
+  options: UseSessionOptions<TProfile> = {}
+): UseSession<TProfile> => {
+  if (typeof options !== "object") {
+    throw new Error("Invalid option passed to useSession");
+  }
+
+  const [state, setState] = useState<any>(() => getInitialState(options));
+
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
-    options.errorMessage
+    state.errorMessage
   );
 
   const setSession = (newState: Partial<any>) => {
-    const mergedState = getComputedValues({ ...state, ...newState }, options);
+    const mergedState = getComputedValues({ ...state, ...newState }, state);
 
     const {
       accessToken,
@@ -104,7 +111,7 @@ const useSession = <TProfile = Profile>(
       if (event.key === "logout") {
         removeSession();
       }
-      if (options.jwt && event.key === "login") {
+      if (state.jwt && event.key === "login") {
         setSession(state.storage.get());
       }
     };
@@ -124,26 +131,21 @@ const useSession = <TProfile = Profile>(
    * Remove Session Timer
    */
   const sessionExpiresIn =
-    expiration && isAuthenticated
-      ? // Need to cap at max 32-bit Int
-        Math.min(2147483647, expiration.valueOf() - Date.now())
-      : null;
+    expiration && isAuthenticated ? expiration.valueOf() - Date.now() : null;
 
   useInterval(() => removeSession(), sessionExpiresIn);
 
   /***
    * RefreshFn timer
    */
-  let refreshExpiresIn: number | null;
+  let refreshExpiresIn: number | null = null;
 
-  if (refreshFn && isAuthenticated) {
+  if (refreshFn && refreshInterval) {
     refreshExpiresIn = Math.min(refreshInterval, sessionExpiresIn || Infinity);
-  } else {
-    refreshExpiresIn = null;
   }
 
-  useInterval(async () => {
-    setSession(await refreshFn!(state));
+  useInterval(() => {
+    setSession(refreshFn!(state));
   }, refreshExpiresIn);
 
   return {

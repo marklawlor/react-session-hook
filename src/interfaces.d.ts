@@ -44,7 +44,7 @@ export type UseSessionOptions<TProfile = Profile> = Partial<
 export interface RequiredUseSessionOptions<TProfile = Profile> extends Tokens {
   storage: Storage;
   profile?: TProfile;
-  expiration?: Date;
+  expiration?: Date | null;
   errorMessage?: string;
   refreshFn?: (session: any) => any | Promise<any>;
   profileFn?: (token: string) => any | Promise<any>;
@@ -68,7 +68,7 @@ export interface HttpReq {
 }
 
 export interface Storage {
-  set: (tokens: Tokens, expires?: Date, req?: HttpReq) => void;
+  set: (tokens: Tokens, expires?: any, req?: HttpReq) => void;
   get: (req?: HttpReq) => Tokens;
   remove: () => void;
 }

@@ -8,7 +8,7 @@
 
 <span>
 ✔️ Simple API <br />
-✔️ Supports JWTs, simple string tokens and custom profiles <br />
+✔️ Supports JWTs, string tokens and custom profiles <br />
 ✔️ Supports handling multiple tokens (access-token, id-token, refresh-token) <br />
 ✔️ Automatic logout and periodic refresh functions <br />
 ✔️ Customisable persistent storage <br />
@@ -123,16 +123,15 @@ See the examples folder for complex usage
   idToken: String | void
   refreshToken: String | void
   
-  // Manually set the session
+  // Manually update the session and storage
   setSession: Function (options) => void 
   
-  // Manually remove the session
+  // Manually remove the session (will clear storage)
   removeSession: Function () => void 
 
   profile: Object | void
-  
-  // If the session has no expiration, will be set to new Date(8640000000000000)
-  expiration: Date,
+
+  expiration: Date | null
   
   // If an accessToken or token exists and has not expired
   isAuthenticated: Boolean
