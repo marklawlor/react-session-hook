@@ -29,16 +29,16 @@ blocks:
           - checkout
           - yarn audit
 
-  # - name: Semantic Release
-  #   task:
-  #     secrets:
-  #       - name: service-tokens
-  #     jobs:
-  #     - name: Semantic Release
-  #       commands:
-  #           - checkout
-  #           - export BRANCH_NAME=$SEMAPHORE_GIT_BRANCH
-  #           - cache restore node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum yarn.lock),node-modules-$SEMAPHORE_GIT_BRANCH,node-modules-master
-  #           - yarn package
-  #           - if [ $SEMAPHORE_GIT_BRANCH == "master" ]; then yarn semantic-release; fi
+  - name: Semantic Release
+    task:
+      secrets:
+        - name: service-tokens
+      jobs:
+      - name: Semantic Release
+        commands:
+            - checkout
+            - export BRANCH_NAME=$SEMAPHORE_GIT_BRANCH
+            - cache restore node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum yarn.lock),node-modules-$SEMAPHORE_GIT_BRANCH,node-modules-master
+            - yarn package
+            - if [ $SEMAPHORE_GIT_BRANCH == "master" ]; then yarn semantic-release; fi
 
