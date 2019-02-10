@@ -32,7 +32,7 @@ blocks:
   # - name: Semantic Release
   #   task:
   #     secrets:
-  #       - name: GITHUB
+  #       - name: service-tokens
   #     jobs:
   #     - name: Semantic Release
   #       commands:
