@@ -9,6 +9,9 @@
     "package": "rm -rf dist && tsc -p tsconfig.build.json && cp -t dist/ README.md package.json LICENSE"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^3.0.2",
+    "@semantic-release/git": "^7.0.8",
+    "@semantic-release/github": "^5.2.9",
     "@types/jest": "^24.0.0",
     "@types/jsonwebtoken": "^8.3.0",
     "@types/jwt-decode": "^2.2.1",
@@ -21,6 +24,7 @@
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-testing-library": "^5.5.4",
+    "semantic-release": "^15.13.3",
     "ts-jest": "^23.10.5",
     "typescript": "^3.3.3"
   },
@@ -30,5 +34,14 @@
   "dependencies": {
     "jwt-decode": "^2.2.0",
     "universal-cookie": "^3.0.7"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ]
   }
 }

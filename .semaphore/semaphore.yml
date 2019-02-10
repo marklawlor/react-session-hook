@@ -1,0 +1,42 @@
+version: v1.0
+name: react-session-hook
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: Install dependencies
+    task:
+      jobs:
+        - name: yarn install and cache
+          commands:
+            - checkout
+            - cache restore node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum yarn.lock),node-modules-$SEMAPHORE_GIT_BRANCH,node-modules-master
+            - yarn install
+            - cache store node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum yarn.lock) node_modules
+  - name: "Tests"
+    task:
+      jobs:
+      - name: Jest
+        commands:
+          - checkout
+          - yarn test
+
+      - name: Check security
+        commands:
+          - checkout
+          - yarn audit
+
+  # - name: Semantic Release
+  #   task:
+  #     secrets:
+  #       - name: GITHUB
+  #     jobs:
+  #     - name: Semantic Release
+  #       commands:
+  #           - checkout
+  #           - export BRANCH_NAME=$SEMAPHORE_GIT_BRANCH
+  #           - cache restore node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum yarn.lock),node-modules-$SEMAPHORE_GIT_BRANCH,node-modules-master
+  #           - if [ $SEMAPHORE_GIT_BRANCH == "master" ]; then yarn semantic-release; fi
+
