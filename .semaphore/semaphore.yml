@@ -25,7 +25,6 @@ blocks:
           - checkout
           - cache restore node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum yarn.lock),node-modules-$SEMAPHORE_GIT_BRANCH,node-modules-master
           - yarn test
-          - checkout
           - npx codecov
 
       - name: Lint
