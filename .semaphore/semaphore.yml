@@ -17,19 +17,23 @@ blocks:
             - cache store node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum yarn.lock) node_modules
   - name: "Tests"
     task:
+      secrets:
+        - name: codecov-token
       jobs:
       - name: Jest
         commands:
           - checkout
           - cache restore node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum yarn.lock),node-modules-$SEMAPHORE_GIT_BRANCH,node-modules-master
           - yarn test
+          - checkout
+          - npx codecov
 
       - name: Check security
         commands:
           - checkout
           - yarn audit
 
-  - name: Semantic Release
+  - name: "Releases"
     task:
       secrets:
         - name: service-tokens
