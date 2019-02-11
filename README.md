@@ -6,6 +6,8 @@
 
 ## Overview
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/marklawlor/react-session-hook.svg)](https://greenkeeper.io/)
+
 <span>
 ✔️ Simple API <br />
 ✔️ Supports JWTs, string tokens and custom profiles <br />
