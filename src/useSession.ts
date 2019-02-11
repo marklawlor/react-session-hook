@@ -20,25 +20,19 @@ export const defaultOptions = {
   storage: cookies
 };
 
+const userOptions: UseSessionOptions<any> = {};
+
 const getInitialState = <TProfile>(
   useSessionOptions: UseSessionOptions<TProfile>
 ) => {
   let options: RequiredUseSessionOptions<TProfile> = {
     ...defaultOptions,
+    ...userOptions,
     ...useSessionOptions
   };
 
-  options = {
-    ...options.storage.get(options.req),
-    ...options
-  };
-
-  const computedValues = getComputedValues(options, options);
-
-  options = {
-    ...options,
-    ...computedValues
-  };
+  options = { ...options.storage.get(options.req), ...options };
+  options = { ...options, ...getComputedValues(options, options) };
 
   options.storage.set(options, options.expiration);
 
@@ -157,6 +151,10 @@ const useSession = <TProfile = Profile>(
       return isAuthenticatedGuard(this);
     }
   };
+};
+
+useSession.config = (options: UseSessionOptions<any>) => {
+  Object.assign(userOptions, options);
 };
 
 export default useSession;

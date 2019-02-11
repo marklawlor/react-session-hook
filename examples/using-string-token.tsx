@@ -12,8 +12,8 @@ const token = JSON.stringify(payload);
 export default () => {
   const session = useSession({ token, profile: payload, jwt: false });
 
-  // isAuthenticatedGuard is not needed, it only provides a Typescript typeguard
-  // you can also use if (session.isAuthenticated === true)
+  // Typescript projects can use session.isAuthenticatedGuard() as a typeguard.
+  // You can also use session.isAuthenticated === true
   if (session.isAuthenticatedGuard()) {
     return <div>My Name Is: {session.profile.name}</div>;
   } else {

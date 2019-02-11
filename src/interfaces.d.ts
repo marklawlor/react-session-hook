@@ -1,4 +1,6 @@
-export type Profile = { [index: string]: any };
+export interface Profile {
+  [index: string]: any;
+}
 
 export type UseSession<TProfile = Profile> =
   | AuthenticatedSession<TProfile>

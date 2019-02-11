@@ -39,14 +39,13 @@ And within your react component:
 ```javascript
 import useSession from 'react-session-hook';
 
+// Global config
+useSession.config(options)
+
 export default () => {
-  // use the JWT values in storage
   const session = useSession();
 
-  // or for non JWT tokens
-  const session = useSession({ jwt: false });
-
-  // if you wish to change any settings
+  // or with a local config
   const session = useSession(options);
 
   const handleLogin = () => {
