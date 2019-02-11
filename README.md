@@ -44,7 +44,7 @@ export default () => {
   // or for non JWT tokens
   const session = useSession({ jwt: false });
 
-  // if you wish to change any settings provide values
+  // if you wish to change any settings
   const session = useSession(options);
 
   if (session.isAuthenticated) {
