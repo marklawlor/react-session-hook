@@ -47,10 +47,30 @@ export default () => {
   // if you wish to change any settings
   const session = useSession(options);
 
+	const handleLogin = () => {
+		// Fetch user tokens
+
+		session.setSession({
+			token: newToken
+		})
+	}
+
+	const handleLogout = () => session.removeSession()
+
   if (session.isAuthenticated) {
-    return <div>Logged in as: {session.profile.name}</div>
+    return (
+		  <div>
+		    <div>Logged in as: {session.profile.name}</div>
+				<button onClick={handleLogout}>Logout</button>
+		  </div>
+		)
   } else {
-    return <div>You are logged out</div>
+    return (
+		  <div>
+		    <div>You are logged out</div>
+				<button onClick={handleLogin}>Login</button>
+		  </div>
+		)
   }
 }
 ```
@@ -177,7 +197,7 @@ export default () => {
   // use the JWT values in storage
   const session = useSession<Profile>();
 
-  if (session.isAuthenicatedGuard()) {
+  if (session.isAuthenticatedGuard()) {
     // Typed as session.profile = Profile
     return <div>Logged in as: {session.profile.name}</div>
   } else {
