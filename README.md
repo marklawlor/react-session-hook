@@ -1,8 +1,8 @@
-<h1 align="center">
+<p align="center">
   <p align="center" style="font-size: 3em">👤</p>
   <p align="center">react-session-hook</p>
   <p align="center" style="font-size: 0.5em">Stateful sessions made easy</p>
-</h1>
+</p>
 
 ## Overview
 
@@ -40,7 +40,7 @@ import useSession from 'react-session-hook';
 export default () => {
   // use the JWT values in storage
   const session = useSession();
-  
+
   // or for non JWT tokens
   const session = useSession({ jwt: false });
 
@@ -57,95 +57,91 @@ export default () => {
 
 ## Examples
 
-See the examples folder for complex usage
+See the (examples folder)[https://github.com/marklawlor/react-session-hook/tree/master/examples]
 
-## Usage
-
-
-### Options
+## Options
 
 ```javascript
-{ 
-  // Set an initial value for a token. If undefined, they will default to the value in storage	
+{
+  // Set an initial value for a token.
+  // If undefined, they will default to the value in storage
   accessToken: String (optional)
   idToken: String (optional)
   refreshToken String (optional)
   token: String (optional)
-      
+
   // Attempt to parse profile and expiration date from the tokens
   jwt: Boolean (True)
 
-  // The session profile. 
+  // The session profile.
   // If jwt = True
   //    This will be set as the payload of the id Token or token
   profile: Object (optional)
 
   // Date object for the session expiration
   // If jwt = True
-  //    Uses the 'exp' field in the accessToken or token to calculate session expiry
-  //    If the payload does not have an 'exp' field it will fall back to this field
+  //    Uses the 'exp' field in the accessToken or token body
+  //    If there is no 'exp' field, this value is used
   // If no expiration is set the session will expire after 10 hours
   // Set value to null to explicitly set a session that never expires
   expiration: Date (optional)
 
-  // Async callback. Returned object be passed to setSession
-  // Notes: 
+  // Returned object be passed to setSession
+  // Notes:
   //   - will not be fired if isAuthenticated = false
-  //   - will be fired before the refreshInterval if session expires before refresh period
-  refreshFn: Function (optional)
-  
+  //   - will be fired before the refreshInterval
+  //     if session expires before refresh period
+  refreshFn: async (session) => Session (optional)
+
   // How often the refreshFn is called.
   refreshInterval: Number (1 * 60 * 60 * 1000) // 1 hours
-  
- 
+
   // Provide your own profile parsing logic. Useful for string tokens
   profileFn: (String) => Object | void
-  
-  // Defaults to cookie storage. See Storage for more information            
+
+  // Defaults to cookie storage. See Storage for more information
   storage: Storage (optional)
 
   //See: Server-Side Rendering for more information
   req: Request (optional)
-  
+
   // See: Global login/logout for more information
   globalLogin: Boolean (false)
   globalLogout: Boolean (false)
-                   
 }
 ```
 
 ### Returned values
 
 ```javascript
-{ 
+{
   // The session tokens
   token: String | void
   accessToken: String | void
   idToken: String | void
   refreshToken: String | void
-  
+
   // Manually update the session and storage
-  setSession: Function (options) => void 
-  
+  setSession: Function (options) => void
+
   // Manually remove the session (will clear storage)
-  removeSession: Function () => void 
+  removeSession: Function () => void
 
   profile: Object | void
 
   expiration: Date | null
-  
+
   // If an accessToken or token exists and has not expired
   isAuthenticated: Boolean
 
   // See: Typescript section for more information
   isAuthenicatedGuard: () => Boolean
-  
+
   // You can manually invoke the refreshFn
   refreshFn: Function (options) => options
-  
-  // If null, the refreshFn is paused. Most likely because isAuthenticated = False
-  refreshInterval: Number | null
 
+  // If null, the refreshFn is paused.
+  refreshInterval: Number | null
 }
 ```
 
@@ -163,7 +159,7 @@ If the `req` option is used, the package assumes you are performing Server Side 
 
 If you are using a custom storage, the request will be passed to your store.
 
-### Typescript 
+### Typescript
 
 `react-session-hook` was written in Typescript and includes typings out of the box.
 
@@ -180,7 +176,7 @@ interface Profile {
 export default () => {
   // use the JWT values in storage
   const session = useSession<Profile>();
-  
+
   if (session.isAuthenicatedGuard()) {
     // Typed as session.profile = Profile
     return <div>Logged in as: {session.profile.name}</div>
