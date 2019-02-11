@@ -49,30 +49,30 @@ export default () => {
   // if you wish to change any settings
   const session = useSession(options);
 
-	const handleLogin = () => {
-		// Fetch user tokens
+  const handleLogin = () => {
+    // Fetch user tokens
 
-		session.setSession({
-			token: newToken
-		})
-	}
+    session.setSession({
+      token: newToken
+    })
+  }
 
-	const handleLogout = () => session.removeSession()
+  const handleLogout = () => session.removeSession()
 
   if (session.isAuthenticated) {
     return (
-		  <div>
-		    <div>Logged in as: {session.profile.name}</div>
-				<button onClick={handleLogout}>Logout</button>
-		  </div>
-		)
+      <div>
+        <div>Logged in as: {session.profile.name}</div>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+    )
   } else {
     return (
-		  <div>
-		    <div>You are logged out</div>
-				<button onClick={handleLogin}>Login</button>
-		  </div>
-		)
+      <div>
+        <div>You are logged out</div>
+        <button onClick={handleLogin}>Login</button>
+      </div>
+    )
   }
 }
 ```
