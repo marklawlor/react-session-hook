@@ -19,7 +19,8 @@
   "scripts": {
     "test": "jest",
     "lint": "tslint -p tsconfig.json",
-    "package": "rm -rf dist && tsc -p tsconfig.build.json && cp -t dist/ README.md package.json LICENSE"
+    "postpublish": "cp -r dist/package.json .",
+    "package": "tsc -p tsconfig.build.json && cp -t dist/ README.md package.json LICENSE"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.2",
