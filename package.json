@@ -3,6 +3,7 @@
   "version": "1.0.0-alpha.4",
   "main": "index.js",
   "license": "MIT",
+  "description": "ReactJS hook to manage session state and storage",
   "typings": "index.d.js",
   "repository": {
     "type": "git",
