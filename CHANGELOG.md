@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/marklawlor/react-session-hook/compare/v1.0.5...v1.0.6) (2019-02-11)
+
+
+### Bug Fixes
+
+* indentation on readme ([dd72009](https://github.com/marklawlor/react-session-hook/commit/dd72009))
+
 ## [1.0.5](https://github.com/marklawlor/react-session-hook/compare/v1.0.4...v1.0.5) (2019-02-11)
 
 
