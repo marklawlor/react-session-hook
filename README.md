@@ -63,7 +63,7 @@ See the [examples folder](https://github.com/marklawlor/react-session-hook/tree/
 
 ```javascript
 {
-  // Set an initial value for a token.
+  // Set this initial value for a token.
   // If undefined, they will default to the value in storage
   accessToken: String (optional)
   idToken: String (optional)
@@ -86,7 +86,7 @@ See the [examples folder](https://github.com/marklawlor/react-session-hook/tree/
   // Set value to null to explicitly set a session that never expires
   expiration: Date (optional)
 
-  // Returned object be passed to setSession
+  // Returned object passed to setSession
   // Notes:
   //   - will not be fired if isAuthenticated = false
   //   - will be fired before the refreshInterval
@@ -102,12 +102,12 @@ See the [examples folder](https://github.com/marklawlor/react-session-hook/tree/
   // Defaults to cookie storage. See Storage for more information
   storage: Storage (optional)
 
-  //See: Server-Side Rendering for more information
+  // See: Server-Side Rendering for more information
   req: Request (optional)
 
   // See: Global login/logout for more information
-  globalLogin: Boolean (false)
-  globalLogout: Boolean (false)
+  globalLogin: Boolean (True)
+  globalLogout: Boolean (True)
 }
 ```
 
