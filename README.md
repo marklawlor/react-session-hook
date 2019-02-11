@@ -135,7 +135,7 @@ See the [examples folder](https://github.com/marklawlor/react-session-hook/tree/
   isAuthenticated: Boolean
 
   // See: Typescript section for more information
-  isAuthenicatedGuard: () => Boolean
+  isAuthenticatedGuard: () => Boolean
 
   // You can manually invoke the refreshFn
   refreshFn: Function (options) => options
@@ -163,8 +163,8 @@ If you are using a custom storage, the request will be passed to your store.
 
 `react-session-hook` was written in Typescript and includes typings out of the box.
 
-It also includes the `isAuthenicatedGuard` function, which acts as a typeguard between an
-authenicated and authenicated session
+It also includes the `isAuthenticatedGuard` function, which acts as a typeguard between an
+authenticated and authenticated session
 
 ```javascript
 import useSession from 'react-session-hook';
