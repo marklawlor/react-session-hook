@@ -28,6 +28,12 @@ blocks:
           - checkout
           - npx codecov
 
+      - name: Lint
+        commands:
+          - checkout
+          - cache restore node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum yarn.lock),node-modules-$SEMAPHORE_GIT_BRANCH,node-modules-master
+          - yarn lint 
+
       - name: Check security
         commands:
           - checkout

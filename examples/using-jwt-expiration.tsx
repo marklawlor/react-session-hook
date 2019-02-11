@@ -1,11 +1,11 @@
-import React from "react";
 import jwt from "jsonwebtoken";
+import React from "react";
 
 import useSession from "../src";
 
 const payload = {
-  name: "John Smith",
-  exp: (Date.now() + 1 * 60 * 1000) / 1000 // 1 minute
+  exp: (Date.now() + 1 * 60 * 1000) / 1000, // 1 minute
+  name: "John Smith"
 };
 
 const token = jwt.sign(payload, "secret");

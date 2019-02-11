@@ -22,7 +22,7 @@ const set = (tokens: Tokens, expires?: Date) => {
   const cookies = getCookies();
 
   const options = {
-    expires: expires
+    expires
   };
 
   if (accessToken) {
@@ -64,6 +64,6 @@ const remove = () => {
 
 export default {
   get,
-  set,
-  remove
+  remove,
+  set
 };

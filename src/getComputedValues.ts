@@ -1,5 +1,5 @@
-import cookies from "./storage/cookies";
 import jwtDecode from "jwt-decode";
+import cookies from "./storage/cookies";
 
 // import { Profile } from "./interfaces";
 
@@ -7,7 +7,8 @@ const getComputedValues = <TProfile>(
   options: Partial<any>,
   { jwt, profileFn }: any
 ): any => {
-  let { profile, expiration, idToken, accessToken, token } = options;
+  const { idToken, accessToken, token } = options;
+  let { profile, expiration } = options;
 
   if (profileFn) {
     if (accessToken && idToken) {
@@ -41,9 +42,9 @@ const getComputedValues = <TProfile>(
 
   const state = {
     ...options,
+    expiration,
     isAuthenticated,
-    profile,
-    expiration
+    profile
   };
 
   return state as any;

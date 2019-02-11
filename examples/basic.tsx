@@ -1,5 +1,5 @@
-import React from "react";
 import jwt from "jsonwebtoken";
+import React from "react";
 
 import useSession from "../src";
 

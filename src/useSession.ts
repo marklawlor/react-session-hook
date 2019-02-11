@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import useInterval from "./useInterval";
 import getComputedValues from "./getComputedValues";
 import isAuthenticatedGuard from "./isAuthenticatedSession";
 import cookies from "./storage/cookies";
+import useInterval from "./useInterval";
 
 import {
   Profile,
@@ -13,10 +13,10 @@ import {
 } from "./interfaces";
 
 export const defaultOptions = {
-  jwt: true,
   isAuthenticated: false,
-  refreshInterval: 15 * 60 * 1000,
+  jwt: true,
   refreshFn: undefined,
+  refreshInterval: 15 * 60 * 1000,
   storage: cookies
 };
 
@@ -61,27 +61,22 @@ const useSession = <TProfile = Profile>(
   const setSession = (newState: Partial<any>) => {
     const mergedState = getComputedValues({ ...state, ...newState }, state);
 
-    const {
-      accessToken,
-      isAuthenticated,
-      expiration,
-      idToken,
-      refreshToken,
-      storage,
-      token
-    } = mergedState;
+    const { accessToken, idToken, refreshToken, storage, token } = mergedState;
 
-    if (isAuthenticated) {
-      storage.set({ accessToken, idToken, refreshToken, token }, expiration);
+    if (mergedState.isAuthenticated) {
+      storage.set(
+        { accessToken, idToken, refreshToken, token },
+        options.expiration
+      );
 
       setState(mergedState);
     } else {
       setState({
         ...mergedState,
-        expiration: undefined,
-        isAuthenticated: false,
         accessToken: undefined,
+        expiration: undefined,
         idToken: undefined,
+        isAuthenticated: false,
         refreshToken: undefined,
         token: undefined
       });
@@ -91,12 +86,12 @@ const useSession = <TProfile = Profile>(
   const removeSession = () => {
     window.localStorage.setItem("logout", Date.now().toString());
     setSession({
-      expiration: undefined,
       accessToken: undefined,
+      expiration: undefined,
       idToken: undefined,
+      profile: undefined,
       refreshToken: undefined,
-      token: undefined,
-      profile: undefined
+      token: undefined
     });
     state.storage.remove();
   };
@@ -151,12 +146,12 @@ const useSession = <TProfile = Profile>(
   return {
     ...state,
 
-    setSession,
     removeSession,
+    setSession,
 
+    clearErrorMessage,
     errorMessage,
     setErrorMessage,
-    clearErrorMessage,
 
     isAuthenticatedGuard(this: any) {
       return isAuthenticatedGuard(this);

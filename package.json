@@ -18,6 +18,7 @@
   ],
   "scripts": {
     "test": "jest",
+    "lint": "tslint -p tsconfig.json",
     "package": "rm -rf dist && tsc -p tsconfig.build.json && cp -t dist/ README.md package.json LICENSE"
   },
   "devDependencies": {
@@ -38,6 +39,8 @@
     "react-testing-library": "^5.5.4",
     "semantic-release": "^15.13.3",
     "ts-jest": "^23.10.5",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.3.3"
   },
   "peerDependencies": {
