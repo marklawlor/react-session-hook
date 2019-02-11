@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/marklawlor/react-session-hook/compare/v1.0.6...v1.1.0) (2019-02-11)
+
+
+### Features
+
+* add global .config() function ([7224f1e](https://github.com/marklawlor/react-session-hook/commit/7224f1e))
+
 ## [1.0.6](https://github.com/marklawlor/react-session-hook/compare/v1.0.5...v1.0.6) (2019-02-11)
 
 
