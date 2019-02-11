@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/marklawlor/react-session-hook/compare/v1.0.3...v1.0.4) (2019-02-11)
+
+
+### Bug Fixes
+
+* spelling errors in readme ([7549697](https://github.com/marklawlor/react-session-hook/commit/7549697))
+
 ## [1.0.3](https://github.com/marklawlor/react-session-hook/compare/v1.0.2...v1.0.3) (2019-02-11)
 
 
