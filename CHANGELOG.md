@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/marklawlor/react-session-hook/compare/v1.0.0...v1.0.1) (2019-02-11)
+
+
+### Bug Fixes
+
+* updated readme ([5e200eb](https://github.com/marklawlor/react-session-hook/commit/5e200eb))
+
 # 1.0.0 (2019-02-10)
 
 
