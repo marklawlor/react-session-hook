@@ -57,7 +57,7 @@ export default () => {
 
 ## Examples
 
-See the (examples folder)[https://github.com/marklawlor/react-session-hook/tree/master/examples]
+See the [examples folder](https://github.com/marklawlor/react-session-hook/tree/master/examples)
 
 ## Options
 
