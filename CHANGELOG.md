@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/marklawlor/react-session-hook/compare/v1.1.1...v1.2.0) (2019-02-13)
+
+
+### Features
+
+* fix globalLogout and globalLogin false ([#8](https://github.com/marklawlor/react-session-hook/issues/8)) ([c14fc86](https://github.com/marklawlor/react-session-hook/commit/c14fc86))
+
 ## [1.1.1](https://github.com/marklawlor/react-session-hook/compare/v1.1.0...v1.1.1) (2019-02-12)
 
 
