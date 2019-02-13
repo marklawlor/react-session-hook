@@ -3,5 +3,5 @@
   "compilerOptions": {
     "rootDir": "src"
   },
-  "exclude": ["examples", "utils.ts"]
+  "exclude": ["examples", "src/__tests__"]
 }
