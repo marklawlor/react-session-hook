@@ -18,7 +18,7 @@ export const hideConsoleErrors = () => {
 export const token = jwt.sign(
   {
     exp: (Date.now() + 1 * 60 * 1000) / 1000, // 1 minute
-    name: "John Smith"
+    name: "John Smith4"
   },
   "secret"
 );

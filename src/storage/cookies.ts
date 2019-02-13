@@ -2,68 +2,85 @@ import Cookies from "universal-cookie";
 
 import { HttpReq, Tokens } from "../interfaces";
 
-const isBrowser =
-  typeof window !== "undefined" && typeof window.document !== "undefined";
-
-const inMemoryCookies = new Cookies({});
-
-const getCookies = (req?: HttpReq) => {
-  if (isBrowser) {
-    return new Cookies();
-  } else if (req && req.headers.cookie) {
-    return new Cookies(req.headers.cookie);
-  } else {
-    return inMemoryCookies;
-  }
-};
-
-const set = (tokens: Tokens, expires?: Date) => {
-  const { accessToken, idToken, refreshToken, token } = tokens;
-  const cookies = getCookies();
-
-  const options = {
-    expires
+interface CookieStorageOptions {
+  req?: {
+    headers: {
+      cookie?: string;
+    };
   };
+  storageAliases: {
+    accessToken: string;
+    idToken: string;
+    refreshToken: string;
+    token: string;
+  };
+}
 
-  if (accessToken) {
-    cookies.set("accessToken", accessToken, options);
-  }
-
-  if (idToken) {
-    cookies.set("idToken", idToken, options);
-  }
-
-  if (refreshToken) {
-    cookies.set("refreshToken", refreshToken, options);
-  }
-
-  if (token) {
-    cookies.set("token", token, options);
+const defaultOptions: CookieStorageOptions = {
+  storageAliases: {
+    accessToken: "accessToken",
+    idToken: "idToken",
+    refreshToken: "refreshToken",
+    token: "token"
   }
 };
 
-const get = (req?: HttpReq): Tokens => {
-  const cookies = getCookies(req);
+const cookieStorage = (options: Partial<CookieStorageOptions> = {}) => {
+  const { req, storageAliases } = { ...defaultOptions, ...options };
 
-  const accessToken = cookies.get("accessToken");
-  const idToken = cookies.get("idToken");
-  const refreshToken = cookies.get("refreshToken");
-  const token = cookies.get("token");
+  const cookies = new Cookies(req ? req.headers.cookie : undefined);
 
-  return { accessToken, idToken, refreshToken, token };
+  return {
+    get: (): Tokens => {
+      const allCookies = cookies.getAll();
+      return {
+        accessToken: allCookies[storageAliases.accessToken],
+        idToken: allCookies[storageAliases.idToken],
+        refreshToken: allCookies[storageAliases.refreshToken],
+        token: allCookies[storageAliases.token]
+      };
+    },
+
+    remove: () => {
+      cookies.remove(storageAliases.accessToken);
+      cookies.remove(storageAliases.idToken);
+      cookies.remove(storageAliases.refreshToken);
+      cookies.remove(storageAliases.token);
+    },
+
+    set: (
+      { accessToken, idToken, refreshToken, token }: Tokens,
+      expires?: Date
+    ) => {
+      if (accessToken) {
+        cookies.set(storageAliases.accessToken, accessToken, { expires });
+      }
+
+      if (idToken) {
+        cookies.set(storageAliases.idToken, idToken, { expires });
+      }
+
+      if (refreshToken) {
+        cookies.set(storageAliases.refreshToken, refreshToken, { expires });
+      }
+
+      if (token) {
+        cookies.set(storageAliases.token, token, { expires });
+      }
+    }
+  };
 };
 
-const remove = () => {
-  const cookies = getCookies();
-
-  cookies.remove("accessToken");
-  cookies.remove("idToken");
-  cookies.remove("refreshToken");
-  cookies.remove("token");
+cookieStorage.get = (options: Partial<CookieStorageOptions> = {}) => {
+  return cookieStorage(options).get();
 };
 
-export default {
-  get,
-  remove,
-  set
+cookieStorage.set = (tokens: Tokens, expires?: Date) => {
+  return cookieStorage().set(tokens, expires);
 };
+
+cookieStorage.remove = () => {
+  return cookieStorage().remove();
+};
+
+export default cookieStorage;

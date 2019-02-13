@@ -15,11 +15,11 @@ test("non-object arguments", () => {
 test("global logout enabled", () => {
   const { result } = testHook(() =>
     useSession({
-      profile: { name: "John Smith" }
+      profile: { name: "John Smith1" }
     })
   );
 
-  expect(result.current.profile!.name).toBe("John Smith");
+  expect(result.current.profile!.name).toBe("John Smith1");
 
   act(() => {
     window.dispatchEvent(
@@ -38,12 +38,12 @@ test("global logout disabled", () => {
   const { result } = testHook(() =>
     useSession({
       globalLogout: false,
-      profile: { name: "John Smith" }
+      profile: { name: "John Smith2" }
     })
   );
 
   expect(result.current.isAuthenticated).toBeTruthy();
-  expect(result.current.profile!.name).toBe("John Smith");
+  expect(result.current.profile!.name).toBe("John Smith2");
 
   act(() => {
     window.dispatchEvent(
@@ -55,7 +55,7 @@ test("global logout disabled", () => {
   });
 
   expect(result.current.isAuthenticated).toBeTruthy();
-  expect(result.current.profile!.name).toBe("John Smith");
+  expect(result.current.profile!.name).toBe("John Smith2");
 });
 
 test("global login enabled", () => {
@@ -76,7 +76,7 @@ test("global login enabled", () => {
   });
 
   expect(result.current.isAuthenticated).toBeTruthy();
-  expect(result.current.profile!.name).toBe("John Smith");
+  expect(result.current.profile!.name).toBe("John Smith4");
 });
 
 test("global login disabled", () => {

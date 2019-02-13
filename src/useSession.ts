@@ -1,83 +1,26 @@
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-import getComputedValues from "./getComputedValues";
-import isAuthenticatedGuard from "./isAuthenticatedSession";
-import cookies from "./storage/cookies";
-import useInterval from "./useInterval";
+import jwtDecode from "jwt-decode";
 
-import {
-  Profile,
-  RequiredUseSessionOptions,
-  UseSession,
-  UseSessionOptions
-} from "./interfaces";
+import { Profile, UseSession } from "./interfaces";
 
-export const defaultOptions = {
-  globalLogin: true,
-  globalLogout: true,
-  isAuthenticated: false,
-  jwt: true,
-  refreshFn: undefined,
-  refreshInterval: 15 * 60 * 1000,
-  storage: cookies
-};
+import { UseSessionContext } from "./context";
+import getExpiration from "./getExpiration";
+import getProfile from "./getProfile";
+import getIsAuthenticated, { isAuthenticatedGuard } from "./isAuthenticated";
 
-const userOptions: UseSessionOptions<any> = {};
+import useGlobalEvents from "./useGlobalEvents";
+import useSessionRefresh from "./useSessionRefresh";
 
-const getInitialState = <TProfile = Profile>(
-  useSessionOptions: UseSessionOptions<TProfile>
-) => {
-  let options: RequiredUseSessionOptions<TProfile> = {
-    ...defaultOptions,
-    ...userOptions,
-    ...useSessionOptions
-  };
+const useSession = <TProfile extends Profile = Profile>(): UseSession<
+  TProfile
+> => {
+  const context = useContext(UseSessionContext);
+  const { setSession, storage } = context;
 
-  options = { ...options.storage.get(options.req), ...options };
-  options = { ...options, ...getComputedValues(options, options) };
-
-  options.storage.set(options, options.expiration);
-
-  return options;
-};
-
-const useSession = <TProfile = Record<string, any>>(
-  options: UseSessionOptions<TProfile> = {}
-): UseSession<TProfile> => {
-  if (typeof options !== "object") {
-    throw new Error("Invalid option passed to useSession");
-  }
-
-  const [state, setState] = useState<any>(() => getInitialState(options));
-
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(
-    state.errorMessage
-  );
-
-  const setSession = (newState: Partial<any>) => {
-    const mergedState = getComputedValues({ ...state, ...newState }, state);
-
-    const { accessToken, idToken, refreshToken, storage, token } = mergedState;
-
-    if (mergedState.isAuthenticated) {
-      storage.set(
-        { accessToken, idToken, refreshToken, token },
-        options.expiration
-      );
-
-      setState(mergedState);
-    } else {
-      setState({
-        ...mergedState,
-        accessToken: undefined,
-        expiration: undefined,
-        idToken: undefined,
-        isAuthenticated: false,
-        refreshToken: undefined,
-        token: undefined
-      });
-    }
-  };
+  const profile = getProfile<TProfile>(context);
+  const expiration = getExpiration({ ...context, profile });
+  const isAuthenticated = getIsAuthenticated({ ...context, profile });
 
   const removeSession = () => {
     window.localStorage.setItem("logout", Date.now().toString());
@@ -89,74 +32,35 @@ const useSession = <TProfile = Record<string, any>>(
       refreshToken: undefined,
       token: undefined
     });
-    state.storage.remove();
+    storage.remove();
   };
 
-  const clearErrorMessage = () => setErrorMessage(undefined);
+  const clearErrorMessage = () => setErrorMessage();
+  const setErrorMessage = (errorMessage?: string) => {
+    setSession({ errorMessage });
+  };
 
-  /**
-   * Global logout/login
-   */
-  useEffect(() => {
-    const logoutEvent = (event: StorageEvent) => {
-      if (state.globalLogout && event.key === "logout") {
-        removeSession();
-      }
-      if (state.globalLogin && event.key === "login") {
-        setSession(state.storage.get());
-      }
-    };
+  const session: UseSession<TProfile> = {
+    ...context,
 
-    window.addEventListener("storage", logoutEvent);
-
-    return () => {
-      window.localStorage.removeItem("logout");
-      window.localStorage.removeItem("login");
-      window.removeEventListener("storage", logoutEvent);
-    };
-  }, [state.globalLogout, state.globalLogin]);
-
-  const { expiration, refreshFn, refreshInterval, isAuthenticated } = state;
-
-  /***
-   * Remove Session Timer
-   */
-  const sessionExpiresIn =
-    expiration && isAuthenticated ? expiration.valueOf() - Date.now() : null;
-
-  useInterval(() => removeSession(), sessionExpiresIn);
-
-  /***
-   * RefreshFn timer
-   */
-  let refreshExpiresIn: number | null = null;
-
-  if (refreshFn && refreshInterval) {
-    refreshExpiresIn = Math.min(refreshInterval, sessionExpiresIn || Infinity);
-  }
-
-  useInterval(() => {
-    setSession(refreshFn!(state));
-  }, refreshExpiresIn);
-
-  return {
-    ...state,
+    expiration,
+    isAuthenticated,
+    profile,
 
     removeSession,
-    setSession,
 
     clearErrorMessage,
-    errorMessage,
     setErrorMessage,
 
     isAuthenticatedGuard(this: any) {
       return isAuthenticatedGuard(this);
     }
   };
-};
 
-useSession.config = (options: UseSessionOptions<any>) => {
-  Object.assign(userOptions, options);
+  useGlobalEvents(session);
+  useSessionRefresh(session);
+
+  return session;
 };
 
 export default useSession;
