@@ -19,7 +19,7 @@
   "scripts": {
     "test": "jest",
     "lint": "tslint -p tsconfig.json",
-    "postpublish": "cp -r dist/package.json .",
+    "postpublish": "cp package.json ../",
     "package": "tsc -p tsconfig.build.json && cp -t dist/ README.md package.json LICENSE"
   },
   "devDependencies": {
