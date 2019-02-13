@@ -27,6 +27,7 @@
     "@semantic-release/git": "^7.0.8",
     "@semantic-release/github": "^5.2.9",
     "@types/jest": "^24.0.3",
+    "@types/jest-diff": "^20.0.0",
     "@types/jsonwebtoken": "^8.3.0",
     "@types/jwt-decode": "^2.2.1",
     "@types/node": "^11.9.0",
