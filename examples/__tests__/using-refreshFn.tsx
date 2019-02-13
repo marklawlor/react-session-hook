@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import React from "react";
 
 import { act, render } from "react-testing-library";
-import { cleanup } from "./utils";
+import { cleanup } from "../../utils";
 
 import Component from "../using-refreshFn";
 

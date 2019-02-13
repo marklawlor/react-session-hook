@@ -14,10 +14,16 @@
 ✔️ Supports handling multiple tokens (access-token, id-token, refresh-token) <br />
 ✔️ Automatic logout and periodic refresh functions <br />
 ✔️ Customisable persistent storage <br />
-✔️ Server-side rendering <br />
 ✔️ Global login and logout events across tabs <br />
 ✔️ Typescript typings and helper functions <br />
 </span>
+
+Coming soon
+
+<span>
+📋Server-side rendering <br />
+</span>
+
 
 
 ## Getting Started
@@ -176,6 +182,10 @@ If you wish to disable this behaviour set `globalLogout` and `globalLogin` to fa
 
 ### Server Side Rendering
 
+<span>
+📋This feature is coming soon<br />
+</span>
+
 If the `req` option is used, the package assumes you are performing Server Side Rendering. If you are using the default cookie storage, it will switch to using the request headers and an in-memory store.
 
 If you are using a custom storage, the request will be passed to your store.
@@ -207,6 +217,12 @@ export default () => {
   }
 }
 ```
+
+## Storage
+
+By defaut, your session tokens will be stored as seperate cookies. You can overwrite this by providing custom storage functions in the useSession options
+
+[See the cookies storage functions for more information](https://github.com/marklawlor/react-session-hook/blob/master/src/storage/cookies.ts)
 
 ## Misc
 
