@@ -1,6 +1,4 @@
-export interface Profile {
-  [index: string]: any;
-}
+export type Profile = Record<string, any>;
 
 export type UseSession<TProfile = Profile> =
   | AuthenticatedSession<TProfile>
@@ -52,6 +50,8 @@ export interface RequiredUseSessionOptions<TProfile = Profile> extends Tokens {
   profileFn?: (token: string) => any | Promise<any>;
   jwt: boolean;
   req?: HttpReq;
+  globalLogout: boolean;
+  globalLogin: boolean;
 }
 
 export interface Tokens {

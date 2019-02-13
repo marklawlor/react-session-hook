@@ -13,6 +13,8 @@ import {
 } from "./interfaces";
 
 export const defaultOptions = {
+  globalLogin: true,
+  globalLogout: true,
   isAuthenticated: false,
   jwt: true,
   refreshFn: undefined,
@@ -22,7 +24,7 @@ export const defaultOptions = {
 
 const userOptions: UseSessionOptions<any> = {};
 
-const getInitialState = <TProfile>(
+const getInitialState = <TProfile = Profile>(
   useSessionOptions: UseSessionOptions<TProfile>
 ) => {
   let options: RequiredUseSessionOptions<TProfile> = {
@@ -39,7 +41,7 @@ const getInitialState = <TProfile>(
   return options;
 };
 
-const useSession = <TProfile = Profile>(
+const useSession = <TProfile = Record<string, any>>(
   options: UseSessionOptions<TProfile> = {}
 ): UseSession<TProfile> => {
   if (typeof options !== "object") {
@@ -97,10 +99,10 @@ const useSession = <TProfile = Profile>(
    */
   useEffect(() => {
     const logoutEvent = (event: StorageEvent) => {
-      if (event.key === "logout") {
+      if (state.globalLogout && event.key === "logout") {
         removeSession();
       }
-      if (state.jwt && event.key === "login") {
+      if (state.globalLogin && event.key === "login") {
         setSession(state.storage.get());
       }
     };
@@ -112,7 +114,7 @@ const useSession = <TProfile = Profile>(
       window.localStorage.removeItem("login");
       window.removeEventListener("storage", logoutEvent);
     };
-  }, []);
+  }, [state.globalLogout, state.globalLogin]);
 
   const { expiration, refreshFn, refreshInterval, isAuthenticated } = state;
 
