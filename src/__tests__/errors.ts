@@ -37,8 +37,8 @@ test("global logout enabled", () => {
 test("global logout disabled", () => {
   const { result } = testHook(() =>
     useSession({
-      profile: { name: "John Smith" },
-      globalLogout: false
+      globalLogout: false,
+      profile: { name: "John Smith" }
     })
   );
 
