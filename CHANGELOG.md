@@ -1,3 +1,18 @@
+# [2.0.0](https://github.com/marklawlor/react-session-hook/compare/v1.2.0...v2.0.0) (2019-02-14)
+
+
+### Features
+
+* added UseSessionProvider ([#9](https://github.com/marklawlor/react-session-hook/issues/9)) ([dca5744](https://github.com/marklawlor/react-session-hook/commit/dca5744))
+
+
+### BREAKING CHANGES
+
+* All useSession options have been moved to the new UseSessionProvider.
+Your application will need to be wrapped in a <UseSessionProvider /> component.
+
+See README and examples for more information
+
 # [1.2.0](https://github.com/marklawlor/react-session-hook/compare/v1.1.1...v1.2.0) (2019-02-13)
 
 
