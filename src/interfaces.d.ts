@@ -1,67 +1,75 @@
 export type Profile = Record<string, any>;
 
-export type UseSession<TProfile = Profile> =
-  | AuthenticatedSession<TProfile>
-  | UnAuthenticatedSession<TProfile>;
-
-interface AbstractSession<TProfile = Profile> extends Tokens {
-  initialized: boolean;
-
-  expiration?: Date;
-  refreshFn?: SessionRefreshFn;
-  storage: Storage;
-
-  setSession: (session: any) => void;
-  removeSession: () => void;
-
-  errorMessage?: string;
-  setErrorMessage: (message?: string) => void;
-  clearErrorMessage: () => void;
-
-  isAuthenticatedGuard: (
-    this: AbstractSession<TProfile>
-  ) => this is AuthenticatedSession<TProfile>;
-}
-
-interface AuthenticatedSession<TProfile = Profile>
-  extends AbstractSession<TProfile> {
-  profile: TProfile;
-  isAuthenticated: true;
-  refreshInterval: number;
-}
-
-interface UnAuthenticatedSession<TProfile = Profile>
-  extends AbstractSession<TProfile> {
-  profile: null;
-  isAuthenticated: false;
-  refreshInterval: null;
-}
-
-export type UseSessionOptions<TProfile = Profile> = Partial<
-  RequiredUseSessionOptions<TProfile>
->;
-
-export interface RequiredUseSessionOptions<TProfile = Profile> extends Tokens {
-  storage: Storage;
-  profile?: TProfile;
-  expiration?: Date | null;
-  errorMessage?: string;
-  refreshFn?: (session: any) => any | Promise<any>;
-  profileFn?: (token: string) => any | Promise<any>;
-  jwt: boolean;
-  req?: HttpReq;
-  globalLogout: boolean;
-  globalLogin: boolean;
+export interface DispatchAction {
+  type: string;
+  value?: any;
 }
 
 export interface Tokens {
-  token?: string;
   accessToken?: string;
   idToken?: string;
   refreshToken?: string;
+  token?: string;
 }
 
-export type SessionRefreshFn = <TProfile>(session: any) => any;
+export interface UseSessionOptions<TProfile> {
+  globalLogin: boolean;
+  globalLogout: boolean;
+  jwt: boolean;
+  refreshFn?: any;
+  refreshInterval?: number | null;
+  profileFn?: (token: string) => TProfile;
+  storage: any;
+  expiration?: Date | null;
+}
+
+export interface UseSessionProviderProps<TProfile>
+  extends UseSessionOptions<TProfile> {
+  initialAccessToken: string;
+  initialIdToken: string;
+  initialRefreshToken: string;
+  initialToken: string;
+
+  initialProfile: TProfile;
+}
+
+export interface UseSession<TProfile> extends UseSessionOptions<TProfile> {
+  accessToken?: string;
+  idToken?: string;
+  refreshToken?: string;
+  token?: string;
+
+  errorMessage?: string;
+
+  profile?: TProfile;
+
+  expiration?: Date | null;
+
+  isAuthenticated: boolean;
+
+  setSession: (session: any) => void;
+  removeSession: () => void;
+  setErrorMessage: (message?: string) => void;
+  clearErrorMessage: () => void;
+
+  dispatch: React.Dispatch<{ type: string; value?: any }>;
+
+  isAuthenticatedGuard: (
+    this: UseSession<TProfile>
+  ) => this is AuthenticatedSession<TProfile>;
+}
+
+export interface AuthenticatedSession<TProfile> extends UseSession<TProfile> {
+  profile: TProfile;
+  isAuthenticated: true;
+  refreshInterval?: number;
+}
+
+export interface UnAuthenticatedSession extends UseSession<any> {
+  profile: undefined;
+  isAuthenticated: false;
+  refreshInterval?: null;
+}
 
 export interface HttpReq {
   headers: {
@@ -69,8 +77,8 @@ export interface HttpReq {
   };
 }
 
-export interface Storage {
-  set: (tokens: Tokens, expires?: any, req?: HttpReq) => void;
-  get: (req?: HttpReq) => Tokens;
-  remove: () => void;
-}
+// export interface Storage {
+//   set: (tokens: Tokens, expires?: any, req?: HttpReq) => void;
+//   get: (req?: HttpReq) => Tokens;
+//   remove: () => void;
+// }

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import React from "react";
 
-import useSession, { cookies } from "../src";
+import useSession, { cookies, UseSessionProvider } from "../src";
 
 const token = jwt.sign(
   {
@@ -12,8 +12,8 @@ const token = jwt.sign(
 
 cookies.set({ token });
 
-export default () => {
-  const session = useSession();
+const Component = () => {
+  const session = useSession<{ name: string }>();
 
   // Typescript projects can use session.isAuthenticatedGuard() as a typeguard.
   // You can also use session.isAuthenticated === true
@@ -23,3 +23,9 @@ export default () => {
     return <div>My Name Is: Unknown</div>;
   }
 };
+
+export default () => (
+  <UseSessionProvider>
+    <Component />
+  </UseSessionProvider>
+);

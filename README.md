@@ -18,6 +18,7 @@
 ✔️ Typescript typings and helper functions <br />
 </span>
 
+
 Coming soon
 
 <span>
@@ -43,25 +44,12 @@ npm install --save react-session-hook
 And within your react component:
 
 ```javascript
-import useSession from 'react-session-hook';
+import useSession, { UseSessionProvider } from 'react-session-hook';
 
-// Global config
-useSession.config(options)
-
-export default () => {
+const Component = () => {
   const session = useSession();
 
-  // or with a local config
-  const session = useSession(options);
-
-  const handleLogin = () => {
-    // Fetch user tokens
-
-    session.setSession({
-      token: newToken
-    })
-  }
-
+  const handleLogin = () => session.setSession({ token: newToken })
   const handleLogout = () => session.removeSession()
 
   if (session.isAuthenticated) {
@@ -80,30 +68,40 @@ export default () => {
     )
   }
 }
+
+export const App = () => (
+  <UseSessionProvider>
+    <Component />
+  </UseSessionProvider>
+)
 ```
 
 ## Examples
 
 See the [examples folder](https://github.com/marklawlor/react-session-hook/tree/master/examples)
 
-## Options
+## UseSessionProvider Options
 
 ```javascript
 {
-  // Set this initial value for a token.
+  // The initial value for a token.
   // If undefined, they will default to the value in storage
-  accessToken: String (optional)
-  idToken: String (optional)
-  refreshToken String (optional)
-  token: String (optional)
+  initialAccessToken: String (optional)
+  initialIdToken: String (optional)
+  initialRefreshToken String (optional)
+  initialToken: String (optional)
+
+  // The session profile.
+  // If undefined, they will follow this logic
+  //
+  // If profileFn = True
+  //    Set as the return value of profileFn
+  // Else if jwt = True
+  //    This will be set as the payload of the id Token or token
+  initialProfile: Object (optional)
 
   // Attempt to parse profile and expiration date from the tokens
   jwt: Boolean (True)
-
-  // The session profile.
-  // If jwt = True
-  //    This will be set as the payload of the id Token or token
-  profile: Object (optional)
 
   // Date object for the session expiration
   // If jwt = True
