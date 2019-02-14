@@ -1,36 +1,102 @@
 import React from "react";
 
-import { SessionContext } from "./interfaces";
+import {
+  DispatchAction,
+  Profile,
+  UseSession,
+  UseSessionProviderProps
+} from "./interfaces";
 
-const defaults: SessionContext = {
+import cookies from "./storage/cookies";
+
+import { getState, reducer } from "./reducer";
+import useGlobalEvents from "./utils/useGlobalEvents";
+import useSessionTimers from "./utils/useSessionTimers";
+
+const defaults: UseSession<any> = {
   globalLogin: true,
   globalLogout: true,
   jwt: true,
-  refreshFn: undefined,
   refreshInterval: 15 * 60 * 1000,
-  storage: {} as any,
+  storage: cookies,
 
-  profileFn: undefined,
+  isAuthenticated: false,
 
-  setSession: (patialState: any) => undefined,
+  removeSession: () => undefined,
+  setSession(value: any) {
+    this.dispatch({ type: "setSession", value });
+  },
 
-  expiration: undefined,
+  clearErrorMessage: () => undefined,
+  setErrorMessage: () => undefined,
 
-  accessToken: undefined,
-  idToken: undefined,
-  refreshToken: undefined,
-  token: undefined
+  dispatch: () => undefined,
+
+  isAuthenticatedGuard: () => false
 };
 
-export const UseSessionContext = React.createContext<SessionContext>(defaults);
+export const UseSessionContext = React.createContext(defaults);
 
-export const UseSessionProvider: React.StatelessComponent<
-  Partial<SessionContext>
-> = ({ children, ...props }) => {
-  const [state, setState] = React.useState(() => ({ ...defaults, ...props }));
+export const UseSessionProvider = <TProfile extends Profile = Profile>(
+  props: Partial<UseSessionProviderProps<TProfile>> & {
+    children?: React.ReactNode;
+  }
+) => {
+  const {
+    children,
+    initialAccessToken,
+    initialIdToken,
+    initialProfile,
+    initialRefreshToken,
+    initialToken,
+    ...options
+  } = { ...defaults, ...props };
+
+  const { accessToken, idToken, refreshToken, token } = options.storage.get();
+
+  const initialState: UseSession<TProfile> = {
+    accessToken: initialAccessToken || accessToken,
+    idToken: initialIdToken || idToken,
+    refreshToken: initialRefreshToken || refreshToken,
+    token: initialToken || token,
+
+    profile: initialProfile,
+
+    isAuthenticated: false,
+
+    ...options
+  };
+
+  const [state, dispatch] = React.useReducer<
+    React.Reducer<UseSession<TProfile>, DispatchAction>,
+    UseSession<TProfile>
+  >(reducer, initialState, getState);
+
+  const session: UseSession<TProfile> = {
+    ...state,
+
+    dispatch,
+
+    setSession: (value: any) => dispatch({ type: "setSession", value }),
+
+    removeSession: () => dispatch({ type: "removeSession" }),
+
+    clearErrorMessage: () => dispatch({ type: "setErrorMessage" }),
+
+    setErrorMessage: (value?: string) => {
+      dispatch({ type: "setErrorMessage", value });
+    },
+
+    isAuthenticatedGuard() {
+      return state.isAuthenticated;
+    }
+  };
+
+  useGlobalEvents(session);
+  useSessionTimers(session);
 
   return (
-    <UseSessionContext.Provider value={{ ...state, ...props, setState }}>
+    <UseSessionContext.Provider value={session}>
       {children}
     </UseSessionContext.Provider>
   );

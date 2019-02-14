@@ -1,10 +1,11 @@
 import { useContext } from "react";
-
-import useSession from "./useSession";
+import { UseSessionContext } from "./context";
+import { Profile, UseSession } from "./interfaces";
 
 export * from "./interfaces";
 export { default as cookies } from "./storage/cookies";
-export { default as isAuthenticated } from "./isAuthenticated";
-import { UseSessionContext } from "./context";
+export { UseSessionProvider } from "./context";
 
-export default useSession;
+export default <TProfile extends Profile = Profile>() => {
+  return useContext(UseSessionContext as React.Context<UseSession<TProfile>>);
+};

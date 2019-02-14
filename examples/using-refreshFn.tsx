@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import React from "react";
 
-import useSession, { UseSessionOptions } from "../src";
+import useSession, { UseSessionProvider } from "../src";
 
 const firstToken = jwt.sign(
   {
@@ -17,25 +17,21 @@ const secondToken = jwt.sign(
   "secret"
 );
 
-useSession.config({
-  expiration: null,
-  refreshFn: ({ token }) => {
-    if (token === firstToken) {
-      return {
-        token: secondToken
-      };
-    } else {
-      return {
-        token: firstToken
-      };
-    }
-  },
-  token: firstToken
-});
+const refreshFn = ({ token }: any) => {
+  if (token === firstToken) {
+    return {
+      token: secondToken
+    };
+  } else {
+    return {
+      token: firstToken
+    };
+  }
+};
 
 // Have a refreshFn that cycles between two tokens
-export default () => {
-  const session = useSession();
+const Component = () => {
+  const session = useSession<{ name: string }>();
 
   // Typescript projects can use session.isAuthenticatedGuard() as a typeguard.
   // You can also use session.isAuthenticated === true
@@ -45,3 +41,13 @@ export default () => {
     return <div>My Name Is: Unknown</div>;
   }
 };
+
+export default () => (
+  <UseSessionProvider
+    expiration={null}
+    initialToken={firstToken}
+    refreshFn={refreshFn}
+  >
+    <Component />
+  </UseSessionProvider>
+);

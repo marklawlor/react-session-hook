@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { UseSession } from "./interfaces";
+import { UseSession } from "../interfaces";
 
 export default <TProfile>({
   globalLogin,

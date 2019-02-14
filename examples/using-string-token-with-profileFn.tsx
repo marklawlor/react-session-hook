@@ -1,20 +1,14 @@
 import jwt from "jsonwebtoken";
 import React from "react";
 
-import useSession from "../src";
+import useSession, { UseSessionProvider } from "../src";
 
 const token = JSON.stringify({
   name: "John Smith"
 });
 
-useSession.config({
-  jwt: false,
-  profileFn: idToken => JSON.parse(idToken),
-  token
-});
-
-export default () => {
-  const session = useSession();
+const Component = () => {
+  const session = useSession<{ name: string }>();
 
   // Typescript projects can use session.isAuthenticatedGuard() as a typeguard.
   // You can also use session.isAuthenticated === true
@@ -24,3 +18,13 @@ export default () => {
     return <div>My Name Is: Unknown</div>;
   }
 };
+
+export default () => (
+  <UseSessionProvider
+    jwt={false}
+    initialToken={token}
+    profileFn={(idToken: any) => JSON.parse(idToken)}
+  >
+    <Component />
+  </UseSessionProvider>
+);

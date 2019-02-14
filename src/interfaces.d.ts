@@ -1,33 +1,59 @@
 export type Profile = Record<string, any>;
 
-export interface SessionContext {
-  setSession: (partialState: any) => void;
+export interface DispatchAction {
+  type: string;
+  value?: any;
+}
 
-  globalLogin: boolean;
-  globalLogout: boolean;
-  jwt: boolean;
-  refreshFn: any;
-  refreshInterval?: number | null;
-  profileFn?: (token: string) => Profile;
-  storage: any;
-
-  expiration?: Date | null;
-
+export interface Tokens {
   accessToken?: string;
   idToken?: string;
   refreshToken?: string;
   token?: string;
 }
 
-export interface UseSession<TProfile extends Profile = Profile> extends SessionContext {
+export interface UseSessionOptions<TProfile> {
+  globalLogin: boolean;
+  globalLogout: boolean;
+  jwt: boolean;
+  refreshFn?: any;
+  refreshInterval?: number | null;
+  profileFn?: (token: string) => TProfile;
+  storage: any;
+  expiration?: Date | null;
+}
+
+export interface UseSessionProviderProps<TProfile>
+  extends UseSessionOptions<TProfile> {
+  initialAccessToken: string;
+  initialIdToken: string;
+  initialRefreshToken: string;
+  initialToken: string;
+
+  initialProfile: TProfile;
+}
+
+export interface UseSession<TProfile> extends UseSessionOptions<TProfile> {
+  accessToken?: string;
+  idToken?: string;
+  refreshToken?: string;
+  token?: string;
+
+  errorMessage?: string;
+
   profile?: TProfile;
+
+  expiration?: Date | null;
+
+  isAuthenticated: boolean;
 
   setSession: (session: any) => void;
   removeSession: () => void;
   setErrorMessage: (message?: string) => void;
   clearErrorMessage: () => void;
 
-  isAuthenticated: boolean;
+  dispatch: React.Dispatch<{ type: string; value?: any }>;
+
   isAuthenticatedGuard: (
     this: UseSession<TProfile>
   ) => this is AuthenticatedSession<TProfile>;
@@ -45,11 +71,11 @@ export interface UnAuthenticatedSession extends UseSession<any> {
   refreshInterval?: null;
 }
 
-// export interface HttpReq {
-//   headers: {
-//     cookie?: string;
-//   };
-// }
+export interface HttpReq {
+  headers: {
+    cookie?: string;
+  };
+}
 
 // export interface Storage {
 //   set: (tokens: Tokens, expires?: any, req?: HttpReq) => void;

@@ -1,6 +1,6 @@
 import useInterval from "./useInterval";
 
-import { UseSession } from "./interfaces";
+import { UseSession } from "../interfaces";
 
 export default <TProfile>(session: UseSession<TProfile>) => {
   const {
