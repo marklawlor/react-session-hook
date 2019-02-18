@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/marklawlor/react-session-hook/compare/v2.0.0...v2.0.1) (2019-02-18)
+
+
+### Bug Fixes
+
+* add missing interfaces.d.ts to npm package ([fa42e71](https://github.com/marklawlor/react-session-hook/commit/fa42e71))
+
 # [2.0.0](https://github.com/marklawlor/react-session-hook/compare/v1.2.0...v2.0.0) (2019-02-14)
 
 
