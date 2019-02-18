@@ -20,7 +20,7 @@
     "test": "jest",
     "lint": "tslint -p tsconfig.json",
     "postpublish": "cp package.json ../",
-    "package": "tsc -p tsconfig.build.json && cp -t dist/ README.md package.json LICENSE"
+    "package": "tsc -p tsconfig.build.json && cp -t dist/ src/interfaces.d.ts README.md package.json LICENSE"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.2",

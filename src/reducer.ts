@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode";
 
-import { AuthenticatedSession, DispatchAction, UseSession } from "./interfaces";
+import { DispatchAction, UseSession } from "./interfaces";
 
 export const reducer = <TProfile>(
   state: UseSession<TProfile>,
