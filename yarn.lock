@@ -6131,10 +6131,10 @@ unique-string@^1.0.0:
   dependencies:
     crypto-random-string "^1.0.0"
 
-universal-cookie@^3.0.7:
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/universal-cookie/-/universal-cookie-3.0.7.tgz#722e8bc455bb33ed3c74988344fad9d9bb88278e"
-  integrity sha512-wfZRbaEzFTDbP64fzTfGDfokB3pWkDNjtsuRAZQWaiuj/Up+3/0AEvN4IhFHPK24iGNtGJ6PNIxv1GQzMSiyMw==
+universal-cookie@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/universal-cookie/-/universal-cookie-4.0.0.tgz#1eb790a684e047574694ea71418dc9752d188630"
+  integrity sha512-6JVx+3oGPjslGqFhQ8YSIBHmYTx8HbyAEH++2/b6SKNXsbsdQ7lU7wRG2bYcRB5JVCz8GYgQ+Ixew91hn3Dy9w==
   dependencies:
     "@types/cookie" "^0.3.1"
     "@types/object-assign" "^4.0.30"
