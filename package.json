@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "jwt-decode": "^2.2.0",
-    "universal-cookie": "^3.0.7"
+    "universal-cookie": "^4.0.1"
   },
   "release": {
     "plugins": [
