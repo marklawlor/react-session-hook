@@ -30,7 +30,7 @@
     "@types/jest-diff": "^20.0.0",
     "@types/jsonwebtoken": "^8.3.0",
     "@types/jwt-decode": "^2.2.1",
-    "@types/node": "^11.9.0",
+    "@types/node": "^12.12.9",
     "@types/react": "^16.8.2",
     "jest": "^24.1.0",
     "jest-dom": "^3.1.0",
